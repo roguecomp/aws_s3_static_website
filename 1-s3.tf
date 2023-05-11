@@ -35,7 +35,12 @@ resource "aws_s3_bucket_policy" "allow_access" {
         "Action" : [
           "s3:GetObject",
           "s3:GetBucketPolicy",
-          "s3:PutBucketPolicy"
+          "s3:PutBucketPolicy",
+          "s3:PutBucketWebsite",
+          "s3:PutObject",
+          "s3:PutObjectAcl",
+          "s3:ListBucket",
+          "s3:DeleteObject"
         ]
         "Resource" : [
           aws_s3_bucket.s3_static_website.arn,
