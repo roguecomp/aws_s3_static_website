@@ -55,6 +55,14 @@ resource "aws_s3_bucket_public_access_block" "s3_static_website_pa_block" {
   restrict_public_buckets = false
 }
 
+resource "aws_s3_bucket_ownership_controls" "s3_static_website_object_ownership" {
+  bucket = aws_s3_bucket.s3_static_website.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "s3_static_website_acl" {
   depends_on = [
     aws_s3_bucket_public_access_block.s3_static_website_pa_block
