@@ -32,7 +32,11 @@ resource "aws_s3_bucket_policy" "allow_access" {
         "Sid" : "PublicReadGetObject"
         "Effect" : "Allow"
         "Principal" : "*"
-        "Action" : "s3:GetObject"
+        "Action" : [
+          "s3:GetObject",
+          "s3:GetBucketPolicy",
+          "s3:PutBucketPolicy"
+        ]
         "Resource" : [
           aws_s3_bucket.s3_static_website.arn,
           "${aws_s3_bucket.s3_static_website.arn}/*",
