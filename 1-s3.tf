@@ -33,9 +33,7 @@ resource "aws_s3_bucket_policy" "allow_access" {
         "Effect" : "Allow"
         "Principal" : "*"
         "Action" : [
-          "s3:GetObject",
-          "s3:GetBucketPolicy",
-          "s3:PutBucketPolicy"
+          "s3:GetObject"
         ]
         "Resource" : [
           aws_s3_bucket.s3_static_website.arn,
@@ -46,7 +44,19 @@ resource "aws_s3_bucket_policy" "allow_access" {
   })
 }
 
+resource "aws_s3_bucket_public_access_block" "s3_static_website_pa_block" {
+  bucket = aws_s3_bucket.s3_static_website.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
 resource "aws_s3_bucket_acl" "s3_static_website_acl" {
+  depends_on = [
+    aws_s3_bucket_public_access_block.s3_static_website_pa_block
+  ]
   bucket = aws_s3_bucket.s3_static_website.id
   acl    = "public-read"
 }
