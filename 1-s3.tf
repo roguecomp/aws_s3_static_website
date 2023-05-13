@@ -2,8 +2,8 @@ provider "aws" {
   region = var.region
 }
 
-locals{
-  folder_files = flatten([for d in flatten(fileset("${path.module}/src/*", "*")) : trim( d, "../") ])
+locals {
+  folder_files = flatten([for d in flatten(fileset("${path.module}/src/*", "*")) : trim(d, "../")])
 }
 
 terraform {
