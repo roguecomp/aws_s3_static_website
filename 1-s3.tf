@@ -96,7 +96,7 @@ resource "aws_s3_object" "object" {
   source       = "src/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
-  etag         = filemd5("${path.module}/src/${each.value}")
+  etag         = filemd5("${path.module}/src/static/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
