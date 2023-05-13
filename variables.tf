@@ -39,3 +39,8 @@ variable "root_html" {
   description = "HTML root file to be loaded first"
   default     = "index.html"
 }
+
+variable "react_app_path" {
+  type    = string
+  default = "website/build"
+}
