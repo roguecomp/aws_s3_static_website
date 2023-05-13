@@ -84,7 +84,7 @@ resource "aws_s3_bucket_website_configuration" "s3_static_website" {
   }
 }
 
-resource "aws_s3_object" "src" {
+resource "aws_s3_object" "object" {
   for_each = fileset("src/", "*")
 
   bucket       = var.www_url
