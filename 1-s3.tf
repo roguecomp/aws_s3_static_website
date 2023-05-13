@@ -93,7 +93,7 @@ resource "aws_s3_object" "object" {
 
   bucket       = var.www_url
   key          = each.value
-  source       = "src/${each.value}"
+  source       = "src/static/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
   etag         = filemd5("${path.module}/src/static/${each.value}")
