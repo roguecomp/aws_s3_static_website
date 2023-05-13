@@ -91,12 +91,12 @@ resource "aws_s3_bucket_website_configuration" "s3_static_website" {
 resource "aws_s3_object" "object" {
   for_each = { for idx, file in local.folder_files : idx => file }
 
-  bucket       = var.www_url
-  key          = "static/${each.value}"
-  source       = "${path.module}/${var.react_app_path}/static/${each.value}"
-  acl          = "public-read"
-  content_type = "text/html"
-  etag         = filemd5("${path.module}/${var.react_app_path}/static/${each.value}")
+  bucket = var.www_url
+  key    = "static/${each.value}"
+  source = "${path.module}/${var.react_app_path}/static/${each.value}"
+  acl    = "public-read"
+  # content_type = "text/html"
+  etag = filemd5("${path.module}/${var.react_app_path}/static/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
