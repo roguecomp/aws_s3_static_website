@@ -102,3 +102,18 @@ resource "aws_s3_object" "object" {
     aws_s3_bucket.s3_static_website
   ]
 }
+
+resource "aws_s3_object" "files" {
+  for_each = fileset("${path.module}/src/", "*")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "src/${each.value}"
+  acl          = "public-read"
+  content_type = "text/html"
+  etag         = filemd5("${path.module}/src/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
