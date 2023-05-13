@@ -95,7 +95,7 @@ resource "aws_s3_object" "object" {
   key          = "static/${each.value}"
   source       = "${path.module}/${var.react_app_path}/static/${each.value}"
   acl          = "public-read"
-  content_type = "text/html"
+  # content_type = "text/html"
   etag         = filemd5("${path.module}/${var.react_app_path}/static/${each.value}")
 
   depends_on = [
