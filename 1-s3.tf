@@ -2,6 +2,10 @@ provider "aws" {
   region = var.region
 }
 
+locals {
+  folder_files = flatten([for d in flatten(fileset("${path.module}/src/*", "*")) : trim(d, "../")])
+}
+
 terraform {
 
   cloud {
@@ -85,25 +89,14 @@ resource "aws_s3_bucket_website_configuration" "s3_static_website" {
 }
 
 resource "aws_s3_object" "object" {
+  for_each = { for idx, file in local.folder_files : idx => file }
+
   bucket       = var.www_url
-  key          = var.root_html
-  source       = "src/${var.root_html}"
+  key          = each.value
+  source       = "src/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
-  etag         = filemd5("src/${var.root_html}")
-
-  depends_on = [
-    aws_s3_bucket.s3_static_website
-  ]
-}
-
-resource "aws_s3_object" "favicon" {
-  bucket = var.www_url
-  key    = var.favicon_path
-  source = "src/${var.favicon_path}"
-  acl    = "public-read"
-  # content_type = "text/html"
-  etag = filemd5("src/${var.favicon_path}")
+  etag         = filemd5("${path.module}/src/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
