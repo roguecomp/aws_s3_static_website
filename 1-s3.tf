@@ -93,10 +93,10 @@ resource "aws_s3_object" "object" {
 
   bucket       = var.www_url
   key          = "static/${each.value}"
-  source       = "src/static/${each.value}"
+  source       = "${var.react_app_path}/static/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
-  etag         = filemd5("${path.module}/src/static/${each.value}")
+  etag         = filemd5("${path.module}/${var.react_app_path}/static/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
