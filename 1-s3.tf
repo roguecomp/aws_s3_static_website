@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  folder_files = flatten([for d in flatten(fileset("${path.module}/${var.react_app_path}/static/*", "*")) : trim(d, "../")])
+  folder_files = flatten([for d in flatten(fileset("${path.module}/src/static/*", "*")) : trim(d, "../")])
 }
 
 terraform {
@@ -93,10 +93,10 @@ resource "aws_s3_object" "object" {
 
   bucket       = var.www_url
   key          = "static/${each.value}"
-  source       = "${var.react_app_path}/static/${each.value}"
+  source       = "src/static/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
-  etag         = filemd5("${path.module}/${var.react_app_path}/static/${each.value}")
+  etag         = filemd5("${path.module}/src/static/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
@@ -104,14 +104,14 @@ resource "aws_s3_object" "object" {
 }
 
 resource "aws_s3_object" "files" {
-  for_each = fileset("${path.module}/${var.react_app_path}/", "*")
+  for_each = fileset("${path.module}/src/", "*")
 
   bucket       = var.www_url
   key          = each.value
-  source       = "${var.react_app_path}/${each.value}"
+  source       = "src/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
-  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+  etag         = filemd5("${path.module}/src/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
