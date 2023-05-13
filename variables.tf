@@ -43,5 +43,5 @@ variable "root_html" {
 variable "react_app_path" {
   type        = string
   description = "path to the react website optimized app"
-  default     = "website/build"
+  default     = "src"
 }
