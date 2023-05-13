@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  folder_files = flatten([for d in flatten(fileset("${path.module}/src/*", "*")) : trim(d, "../")])
+  folder_files = flatten([for d in flatten(fileset("${path.module}/src/static/*", "*")) : trim(d, "../")])
 }
 
 terraform {
