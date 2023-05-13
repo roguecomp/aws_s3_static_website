@@ -104,7 +104,7 @@ resource "aws_s3_object" "object" {
 }
 
 resource "aws_s3_object" "files" {
-  for_each = fileset("${path.module}/${var.react_app_path}/", "*")
+  for_each = fileset("${path.module}/website/build/", "*")
 
   bucket       = var.www_url
   key          = each.value
