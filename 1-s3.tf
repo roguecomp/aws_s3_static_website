@@ -92,7 +92,7 @@ resource "aws_s3_object" "object" {
   for_each = { for idx, file in local.folder_files : idx => file }
 
   bucket       = var.www_url
-  key          = each.value
+  key          = "static/${each.value}"
   source       = "src/static/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
