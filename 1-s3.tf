@@ -2,10 +2,6 @@ provider "aws" {
   region = var.region
 }
 
-locals {
-  folder_files = flatten([for d in flatten(fileset("${path.module}/${var.react_app_path}/static/*", "*")) : trim(d, "../")])
-}
-
 terraform {
 
   cloud {
@@ -88,29 +84,119 @@ resource "aws_s3_bucket_website_configuration" "s3_static_website" {
   }
 }
 
-resource "aws_s3_object" "object" {
-  for_each = { for idx, file in local.folder_files : idx => file }
+resource "aws_s3_object" "media" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "static/media/*.svg")
 
-  bucket = var.www_url
-  key    = "static/${each.value}"
-  source = "${path.module}/${var.react_app_path}/static/${each.value}"
-  acl    = "public-read"
-  # content_type = "text/html"
-  etag = filemd5("${path.module}/${var.react_app_path}/static/${each.value}")
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "image/svg+xml"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
 
   depends_on = [
     aws_s3_bucket.s3_static_website
   ]
 }
 
-resource "aws_s3_object" "files" {
-  for_each = fileset("${path.module}/${var.react_app_path}/", "*")
+resource "aws_s3_object" "js" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "static/js/*")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "text/javascript"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
+
+resource "aws_s3_object" "css" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "static/css/*")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "text/css"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
+
+resource "aws_s3_object" "json" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "*.json")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "application/json"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
+
+resource "aws_s3_object" "html" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "*.html")
 
   bucket       = var.www_url
   key          = each.value
   source       = "${path.module}/${var.react_app_path}/${each.value}"
   acl          = "public-read"
   content_type = "text/html"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
+
+resource "aws_s3_object" "text" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "*.txt")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "text/plain"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
+
+resource "aws_s3_object" "png" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "*.png")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "image/x-png"
+  etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
+
+  depends_on = [
+    aws_s3_bucket.s3_static_website
+  ]
+}
+
+resource "aws_s3_object" "ico" {
+  for_each = fileset("${path.module}/${var.react_app_path}", "*.ico")
+
+  bucket       = var.www_url
+  key          = each.value
+  source       = "${path.module}/${var.react_app_path}/${each.value}"
+  acl          = "public-read"
+  content_type = "image/vnd.microsoft.icon"
   etag         = filemd5("${path.module}/${var.react_app_path}/${each.value}")
 
   depends_on = [

@@ -65,7 +65,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   depends_on = [
     aws_acm_certificate.cert,
     aws_acm_certificate_validation.cert,
-    aws_s3_object.object,
-    aws_s3_object.files
+    aws_s3_object.html,
+    aws_s3_object.css
   ]
 }
