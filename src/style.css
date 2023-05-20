@@ -1,0 +1,38 @@
+body {
+    background-color: #434c5e;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    color: #eceff4;
+}
+
+h1 {
+    color: #eceff4;
+    font-weight: 200;
+    text-align: center;
+}
+
+.scroll {
+    margin: 7%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.svg {
+    width: 100px;
+    fill: white;
+    transition: ease 0.5s;
+}
+
+.svg:hover {
+    background-color: white;
+    border-radius: 1rem;;
+}
+
+.scroll a {
+    padding: 10%;
+    background-color: #2e3440;
+    border-radius: 2rem;
+}
